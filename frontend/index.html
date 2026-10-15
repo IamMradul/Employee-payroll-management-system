@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Payroll Management System (EPMS) - ADBMS Project</title>
+    <title>Employee Payroll Management System (EPMS) - ADBMS</title>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,44 +18,60 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand-icon">⚡</div>
+            <div class="brand-icon">EP</div>
             <div class="brand-text">
-                <h2>EPMS Core</h2>
-                <span>PostgreSQL 15+</span>
+                <h2>EPMS Enterprise</h2>
+                <span>PostgreSQL 15+ Core</span>
             </div>
         </div>
 
         <ul class="nav-menu">
             <li class="nav-item active" data-tab="dashboard">
-                <span class="nav-icon">📊</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                </span>
                 <span>Dashboard</span>
             </li>
             <li class="nav-item" data-tab="employees">
-                <span class="nav-icon">👥</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
                 <span>Employees</span>
             </li>
             <li class="nav-item" data-tab="hierarchy">
-                <span class="nav-icon">🌳</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><path d="M6 8v5a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2"/><path d="M6 14v2"/></svg>
+                </span>
                 <span>Org Hierarchy</span>
             </li>
             <li class="nav-item" data-tab="attendance">
-                <span class="nav-icon">⏱️</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </span>
                 <span>Attendance & Leaves</span>
             </li>
             <li class="nav-item" data-tab="payroll">
-                <span class="nav-icon">💰</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                </span>
                 <span>Payroll Runs</span>
             </li>
             <li class="nav-item" data-tab="payslips">
-                <span class="nav-icon">📄</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                </span>
                 <span>Payslip Ledger</span>
             </li>
             <li class="nav-item" data-tab="reports">
-                <span class="nav-icon">📈</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                </span>
                 <span>Reports & Analytics</span>
             </li>
             <li class="nav-item" data-tab="adbms-console">
-                <span class="nav-icon">⚡</span>
+                <span class="nav-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+                </span>
                 <span>ADBMS SQL Console</span>
             </li>
         </ul>
@@ -78,17 +94,17 @@
             <div class="topbar-actions">
                 <!-- Role Switcher for Dynamic RLS Testing -->
                 <div class="role-switcher-box">
-                    <label>Simulate Role:</label>
+                    <label>Role Context:</label>
                     <select id="roleSelect" class="role-select">
                         <option value="ADMIN">ADMIN (Full Access)</option>
-                        <option value="HR">HR (People & Leaves)</option>
+                        <option value="HR">HR (Personnel & Leaves)</option>
                         <option value="ACCOUNTANT">ACCOUNTANT (Disbursements)</option>
                         <option value="EMPLOYEE">EMPLOYEE (Self RLS Only)</option>
                     </select>
                 </div>
 
                 <div class="user-badge">
-                    <div class="avatar" id="userAvatar">A</div>
+                    <div class="avatar" id="userAvatar">VA</div>
                     <div>
                         <div style="font-size:13px; font-weight:600;" id="userNameLabel">Vikram Aditya (Admin/CEO)</div>
                         <span class="badge active" id="userRoleBadge" style="font-size:10px; padding:2px 6px;">ADMIN</span>
@@ -103,38 +119,38 @@
             <!-- 1. DASHBOARD TAB -->
             <section id="dashboard" class="tab-pane active">
                 <div class="kpi-grid">
-                    <div class="kpi-card blue">
+                    <div class="kpi-card">
                         <div class="kpi-title">Active Headcount</div>
                         <div class="kpi-value" id="kpiHeadcount">28</div>
                         <div class="kpi-subtext">Across 6 enterprise departments</div>
                     </div>
-                    <div class="kpi-card green">
+                    <div class="kpi-card">
                         <div class="kpi-title">Latest Net Payout</div>
                         <div class="kpi-value" id="kpiPayrollSpend">₹0.00</div>
-                        <div class="kpi-subtext">Automated statutory TDS applied</div>
+                        <div class="kpi-subtext">Statutory TDS and PF calculated</div>
                     </div>
-                    <div class="kpi-card amber">
+                    <div class="kpi-card">
                         <div class="kpi-title">Active Pay Period</div>
                         <div class="kpi-value" id="kpiActiveRun">2026-02</div>
                         <div class="kpi-subtext">Declarative partition pruning</div>
                     </div>
-                    <div class="kpi-card purple">
+                    <div class="kpi-card">
                         <div class="kpi-title">Batch Run Status</div>
                         <div class="kpi-value" id="kpiRunStatus">PAID</div>
-                        <div class="kpi-subtext">Bank disbursement reference wired</div>
+                        <div class="kpi-subtext">Bank disbursement finalized</div>
                     </div>
                 </div>
 
                 <div class="charts-grid">
                     <div class="chart-card">
                         <h3>Historical Payroll Spend Trend (6 Months)</h3>
-                        <div style="height: 260px;">
+                        <div style="height: 250px;">
                             <canvas id="trendChart"></canvas>
                         </div>
                     </div>
                     <div class="chart-card">
                         <h3>Department Spend Distribution</h3>
-                        <div style="height: 260px;">
+                        <div style="height: 250px;">
                             <canvas id="deptChart"></canvas>
                         </div>
                     </div>
@@ -167,7 +183,7 @@
             <section id="employees" class="tab-pane">
                 <div class="table-card">
                     <div class="table-header">
-                        <h3>Enterprise Employee Master (28 Seeded Profiles)</h3>
+                        <h3>Enterprise Employee Master</h3>
                         <span style="font-size:12px; color:var(--text-muted)">Joined with Departments, Designations & Managers</span>
                     </div>
                     <div class="table-responsive">
@@ -191,7 +207,7 @@
 
             <!-- 3. ORG HIERARCHY TAB (RECURSIVE CTE) -->
             <section id="hierarchy" class="tab-pane">
-                <div class="table-card" style="padding: 24px;">
+                <div class="table-card" style="padding: 20px;">
                     <div style="margin-bottom: 20px;">
                         <h3>Organizational Command Hierarchy</h3>
                         <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
@@ -204,9 +220,9 @@
 
             <!-- 4. ATTENDANCE & LEAVES TAB -->
             <section id="attendance" class="tab-pane">
-                <div style="margin-bottom: 24px;">
-                    <h3 style="margin-bottom:12px;">Active Leave Quotas & Balances (Stored Generated Column)</h3>
-                    <div id="leaveBalancesContainer" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;"></div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom:12px; font-size:14px; font-weight:600;">Active Leave Quotas (Stored Generated Column)</h3>
+                    <div id="leaveBalancesContainer" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:14px;"></div>
                 </div>
 
                 <div class="table-card">
@@ -256,20 +272,23 @@
 
             <!-- 5. PAYROLL RUNS TAB -->
             <section id="payroll" class="tab-pane">
-                <div class="console-container" style="margin-bottom: 24px;">
-                    <h3 style="margin-bottom:8px;">Execute PL/pgSQL Batch Payroll Run</h3>
-                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">
+                <div class="console-container" style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom:6px; font-size:14px; font-weight:600;">Execute PL/pgSQL Batch Payroll Run</h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:14px;">
                         Invokes <code>CALL process_monthly_payroll(year, month)</code> which streams eligible employees via a PL/pgSQL <strong>CURSOR</strong> and transaction <strong>SAVEPOINTs</strong> into the declaratively partitioned <code>payslips</code> table.
                     </p>
-                    <div style="display:flex; gap:16px; align-items:center;">
-                        <input type="number" id="payrollYearInput" class="text-input" style="max-width:120px;" value="2026" min="2020" max="2030">
-                        <select id="payrollMonthInput" class="select-input" style="max-width:180px;">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <input type="number" id="payrollYearInput" class="text-input" style="max-width:110px;" value="2026" min="2020" max="2030">
+                        <select id="payrollMonthInput" class="select-input" style="max-width:160px;">
                             <option value="1">01 - January</option>
                             <option value="2">02 - February</option>
                             <option value="3" selected>03 - March (Live Demo)</option>
                             <option value="4">04 - April</option>
                         </select>
-                        <button class="btn btn-primary" onclick="triggerNewPayroll()">⚡ Run Monthly Payroll</button>
+                        <button class="btn btn-primary" onclick="triggerNewPayroll()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            Execute Payroll Run
+                        </button>
                     </div>
                 </div>
 
@@ -371,7 +390,10 @@
                             <h3>Materialized View: Pre-Computed Analytics</h3>
                             <span style="font-size:11px; color:var(--text-muted)">Cached physically on disk for sub-millisecond BI dashboards</span>
                         </div>
-                        <button class="btn btn-secondary btn-sm" onclick="refreshMv()">🔄 Refresh Materialized View</button>
+                        <button class="btn btn-secondary btn-sm" onclick="refreshMv()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+                            Refresh Materialized View
+                        </button>
                     </div>
                     <div class="table-responsive">
                         <table>
@@ -394,18 +416,21 @@
             <!-- 8. ADBMS SQL CONSOLE TAB -->
             <section id="adbms-console" class="tab-pane">
                 <div class="console-container">
-                    <h3 style="margin-bottom:8px;">Interactive ADBMS Query Execution Engine</h3>
-                    <p style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">
+                    <h3 style="margin-bottom:6px; font-size:14px; font-weight:600;">Interactive ADBMS Query Execution Engine</h3>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">
                         Select any of the advanced PostgreSQL queries below to inspect its raw SQL and execute it live against the database engine.
                     </p>
 
                     <div class="query-selector">
-                        <select id="adbmsQuerySelect" class="select-input"></select>
-                        <button class="btn btn-primary" onclick="runAdbmsQuery()">⚡ Execute Live Query</button>
+                        <select id="adbmsQuerySelect" class="select-input" aria-label="Select ADBMS Analytical Query"></select>
+                        <button class="btn btn-primary" id="btnRunAdbmsQuery" onclick="runAdbmsQuery()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            Run Query
+                        </button>
                     </div>
 
-                    <div class="sql-viewer" id="adbmsSqlViewer">-- Select a query above and click 'Execute Live Query'</div>
-                    <div id="adbmsQueryMetrics" style="font-size:12px; margin-bottom:16px;"></div>
+                    <div class="sql-viewer" id="adbmsSqlViewer">-- Select a query above and click 'Run Query'</div>
+                    <div id="adbmsQueryMetrics" style="font-size:12px; margin-bottom:14px; font-weight:500;"></div>
 
                     <div class="table-card" style="margin-bottom:0;">
                         <div class="table-responsive">

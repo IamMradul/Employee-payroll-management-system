@@ -1,7 +1,7 @@
 // ============================================================================
 // ADVANCED DATABASE MANAGEMENT SYSTEMS (ADBMS) PROJECT
 // System: Employee Payroll Management System (EPMS)
-// Chart.js Visualizations (Department Breakdown & Historical Payroll Trends)
+// Chart.js Visualizations (Professional Light Enterprise Theme)
 // ============================================================================
 
 let deptChart = null;
@@ -25,9 +25,10 @@ function renderDepartmentChart(canvasId, deptCosts) {
             datasets: [{
                 data: data,
                 backgroundColor: [
-                    '#38BDF8', '#818CF8', '#34D399', '#FBBF24', '#FB7185', '#C084FC'
+                    '#1E40AF', '#0D9488', '#0284C7', '#6366F1', '#D97706', '#64748B'
                 ],
-                borderWidth: 0
+                borderWidth: 2,
+                borderColor: '#FFFFFF'
             }]
         },
         options: {
@@ -36,10 +37,10 @@ function renderDepartmentChart(canvasId, deptCosts) {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { color: '#94A3B8', font: { size: 11 } }
+                    labels: { color: '#475569', font: { size: 11, family: 'Inter' }, padding: 12 }
                 }
             },
-            cutout: '65%'
+            cutout: '70%'
         }
     });
 }
@@ -54,7 +55,6 @@ function renderPayrollTrendChart(canvasId, runs) {
 
     // Sort chronologically ascending
     const sorted = [...runs].reverse();
-    const monthNames = ["", "Oct '25", "Nov '25", "Dec '25", "Jan '26", "Feb '26", "Mar '26"];
     const labels = sorted.map(r => `${r.payroll_year}-${String(r.payroll_month).padStart(2, '0')}`);
     const grossData = sorted.map(r => parseFloat(r.total_gross_pay));
     const netData = sorted.map(r => parseFloat(r.total_net_pay));
@@ -67,14 +67,16 @@ function renderPayrollTrendChart(canvasId, runs) {
                 {
                     label: 'Gross Payroll (₹)',
                     data: grossData,
-                    backgroundColor: 'rgba(56, 189, 248, 0.7)',
-                    borderRadius: 4
+                    backgroundColor: '#2563EB',
+                    borderRadius: 4,
+                    barPercentage: 0.6
                 },
                 {
                     label: 'Net Disbursed (₹)',
                     data: netData,
-                    backgroundColor: 'rgba(52, 211, 153, 0.7)',
-                    borderRadius: 4
+                    backgroundColor: '#059669',
+                    borderRadius: 4,
+                    barPercentage: 0.6
                 }
             ]
         },
@@ -84,12 +86,13 @@ function renderPayrollTrendChart(canvasId, runs) {
             scales: {
                 x: {
                     grid: { display: false },
-                    ticks: { color: '#94A3B8' }
+                    ticks: { color: '#64748B', font: { family: 'Inter', size: 11 } }
                 },
                 y: {
-                    grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                    grid: { color: '#E2E8F0' },
                     ticks: {
-                        color: '#94A3B8',
+                        color: '#64748B',
+                        font: { family: 'Inter', size: 11 },
                         callback: val => '₹' + (val / 100000).toFixed(1) + 'L'
                     }
                 }
@@ -97,7 +100,7 @@ function renderPayrollTrendChart(canvasId, runs) {
             plugins: {
                 legend: {
                     position: 'top',
-                    labels: { color: '#94A3B8' }
+                    labels: { color: '#475569', font: { family: 'Inter', size: 12 } }
                 }
             }
         }

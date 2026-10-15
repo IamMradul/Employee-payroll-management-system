@@ -215,8 +215,8 @@ window.viewEmployeeDetail = async function(empId) {
                 </div>
             </div>
 
-            <h4 style="font-size:14px; margin-bottom:12px; color:var(--accent-blue);">Active Salary Structure</h4>
-            <div style="background:var(--bg-primary); padding:16px; border-radius:8px; border:1px solid var(--border-color);">
+            <h4 style="font-size:13px; font-weight:600; margin-bottom:12px; color:var(--text-primary);">Active Salary Structure</h4>
+            <div style="background:#F8FAFC; padding:16px; border-radius:8px; border:1px solid var(--border-color);">
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; font-size:13px;">
                     <div>Basic Pay: <strong>₹${Number(sal.basic_pay || 0).toLocaleString('en-IN')}</strong></div>
                     <div>HRA: <strong>₹${Number(sal.hra || 0).toLocaleString('en-IN')}</strong></div>
@@ -226,8 +226,8 @@ window.viewEmployeeDetail = async function(empId) {
                     <div>Insurance Deduction: <strong>₹${sal.insurance_deduction || 0}</strong></div>
                 </div>
                 <div style="margin-top:12px; font-size:12px;">
-                    <p style="color:var(--text-muted); margin-bottom:4px;">Flexible JSONB Allowances:</p>
-                    <pre style="background:#0F172A; padding:8px; border-radius:4px; color:#38BDF8;">${JSON.stringify(sal.flexible_allowances || {}, null, 2)}</pre>
+                    <p style="color:var(--text-muted); margin-bottom:4px; font-weight:500;">Flexible JSONB Allowances:</p>
+                    <pre style="background:#0F172A; padding:10px; border-radius:6px; color:#7DD3FC; font-family:var(--font-mono); font-size:11px;">${JSON.stringify(sal.flexible_allowances || {}, null, 2)}</pre>
                 </div>
             </div>
         `;
@@ -251,17 +251,17 @@ async function loadHierarchy() {
     try {
         const res = await api.getHierarchy();
         container.innerHTML = `
-            <div style="display:flex; flex-direction:column; gap:12px;">
+            <div style="display:flex; flex-direction:column; gap:10px;">
                 ${res.hierarchy.map(node => `
-                    <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:8px; padding:12px 16px; margin-left:${(node.hierarchy_level - 1) * 28}px; border-left:4px solid ${getLevelColor(node.hierarchy_level)}">
+                    <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:6px; padding:12px 16px; margin-left:${(node.hierarchy_level - 1) * 24}px; border-left:3px solid ${getLevelColor(node.hierarchy_level)}; box-shadow:0 1px 2px rgba(0,0,0,0.04);">
                         <div style="display:flex; align-items:center; justify-content:space-between;">
                             <div>
-                                <span class="badge" style="background:rgba(255,255,255,0.1); margin-right:8px;">Level ${node.hierarchy_level}</span>
-                                <strong>${node.employee_name}</strong> (${node.emp_code}) - <span style="color:var(--accent-blue)">${node.designation_title}</span>
+                                <span class="badge" style="background:#F1F5F9; color:#475569; margin-right:8px; font-weight:600;">Level ${node.hierarchy_level}</span>
+                                <strong style="color:#0F172A;">${node.employee_name}</strong> <span style="color:#64748B;">(${node.emp_code})</span> — <span style="color:#1E40AF; font-weight:500;">${node.designation_title}</span>
                             </div>
-                            <span style="font-size:12px; color:var(--text-muted)">${node.dept_name}</span>
+                            <span style="font-size:12px; color:#64748B;">${node.dept_name}</span>
                         </div>
-                        <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+                        <div style="font-size:11px; color:#64748B; margin-top:4px;">
                             Chain: ${node.reporting_path}
                         </div>
                     </div>
@@ -269,12 +269,12 @@ async function loadHierarchy() {
             </div>
         `;
     } catch (err) {
-        container.innerHTML = `<p style="color:var(--accent-rose)">Failed to load org hierarchy: ${err.message}</p>`;
+        container.innerHTML = `<p style="color:var(--danger-text)">Failed to load org hierarchy: ${err.message}</p>`;
     }
 }
 
 function getLevelColor(level) {
-    const colors = ['#38BDF8', '#818CF8', '#34D399', '#FBBF24', '#FB7185'];
+    const colors = ['#1E40AF', '#0D9488', '#0284C7', '#6366F1', '#D97706'];
     return colors[(level - 1) % colors.length];
 }
 
@@ -462,46 +462,49 @@ window.viewPayslipModal = async function(payslipId, year) {
         const p = res.payslip;
 
         let modalContent = `
-            <div style="border-bottom:1px solid var(--border-color); padding-bottom:14px; margin-bottom:16px;">
+            <div style="border-bottom:1px solid var(--border-color); padding-bottom:12px; margin-bottom:16px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <h3 style="font-size:16px;">${p.employee_name} (${p.emp_code})</h3>
-                        <p style="font-size:12px; color:var(--text-muted);">${p.dept_name} | ${p.designation_title}</p>
+                        <h3 style="font-size:15px; font-weight:600; color:var(--text-primary);">${p.employee_name} (${p.emp_code})</h3>
+                        <p style="font-size:12px; color:var(--text-muted);">${p.dept_name} • ${p.designation_title}</p>
                     </div>
                     <span class="badge ${p.payment_status.toLowerCase()}">${p.payment_status}</span>
                 </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
-                <div style="background:var(--bg-primary); padding:16px; border-radius:8px;">
-                    <h4 style="font-size:13px; color:var(--accent-blue); margin-bottom:10px;">EARNINGS (₹)</h4>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Basic Salary:</span> <strong>₹${Number(p.basic_pay).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>HRA:</span> <strong>₹${Number(p.hra).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>DA:</span> <strong>₹${Number(p.da).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Special Allowance:</span> <strong>₹${Number(p.special_allowance).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Flexible Allowances:</span> <strong>₹${Number(p.flexible_allowances_total).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Overtime Pay:</span> <strong>₹${Number(p.overtime_pay).toLocaleString('en-IN')}</strong></div>
-                    <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0;">
-                    <div style="display:flex; justify-content:space-between; font-weight:700;"><span>Gross Salary:</span> <strong>₹${Number(p.gross_salary).toLocaleString('en-IN')}</strong></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px;">
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:14px; border-radius:6px;">
+                    <h4 style="font-size:12px; font-weight:600; text-transform:uppercase; color:#1E40AF; margin-bottom:10px;">Earnings (₹)</h4>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Basic Salary</span> <strong>₹${Number(p.basic_pay).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>HRA</span> <strong>₹${Number(p.hra).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>DA</span> <strong>₹${Number(p.da).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Special Allowance</span> <strong>₹${Number(p.special_allowance).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Flexible Allowances</span> <strong>₹${Number(p.flexible_allowances_total).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Overtime Pay</span> <strong>₹${Number(p.overtime_pay).toLocaleString('en-IN')}</strong></div>
+                    <hr style="border:none; border-top:1px solid #CBD5E1; margin:8px 0;">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:13px;"><span>Gross Salary</span> <strong>₹${Number(p.gross_salary).toLocaleString('en-IN')}</strong></div>
                 </div>
 
-                <div style="background:var(--bg-primary); padding:16px; border-radius:8px;">
-                    <h4 style="font-size:13px; color:var(--accent-rose); margin-bottom:10px;">DEDUCTIONS (₹)</h4>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Provident Fund (PF):</span> <strong>₹${Number(p.pf_deduction).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Tax (Monthly TDS):</span> <strong>₹${Number(p.tax_deduction).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Insurance:</span> <strong>₹${Number(p.insurance_deduction).toLocaleString('en-IN')}</strong></div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><span>Loss of Pay (LOP):</span> <strong>₹${Number(p.lop_deduction).toLocaleString('en-IN')}</strong></div>
-                    <hr style="border:none; border-top:1px solid var(--border-color); margin:8px 0;">
-                    <div style="display:flex; justify-content:space-between; font-weight:700;"><span>Total Deductions:</span> <strong>₹${Number(p.total_deductions).toLocaleString('en-IN')}</strong></div>
+                <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:14px; border-radius:6px;">
+                    <h4 style="font-size:12px; font-weight:600; text-transform:uppercase; color:#991B1B; margin-bottom:10px;">Deductions (₹)</h4>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Provident Fund (PF)</span> <strong>₹${Number(p.pf_deduction).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Income Tax (TDS)</span> <strong>₹${Number(p.tax_deduction).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Insurance</span> <strong>₹${Number(p.insurance_deduction).toLocaleString('en-IN')}</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:13px;"><span>Loss of Pay (LOP)</span> <strong>₹${Number(p.lop_deduction).toLocaleString('en-IN')}</strong></div>
+                    <hr style="border:none; border-top:1px solid #CBD5E1; margin:8px 0;">
+                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:13px;"><span>Total Deductions</span> <strong>₹${Number(p.total_deductions).toLocaleString('en-IN')}</strong></div>
                 </div>
             </div>
 
-            <div style="background:linear-gradient(135deg, rgba(2,132,199,0.2), rgba(37,99,235,0.2)); border:1px solid var(--accent-blue); border-radius:8px; padding:16px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:6px; padding:16px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <span style="font-size:12px; color:var(--text-muted); display:block;">NET TAKE-HOME PAY</span>
-                    <strong style="font-size:22px; color:var(--accent-green);">₹${Number(p.net_salary).toLocaleString('en-IN')}</strong>
+                    <span style="font-size:11px; text-transform:uppercase; font-weight:600; color:#166534; display:block;">Net Disbursed Take-Home</span>
+                    <strong style="font-size:22px; color:#15803D;">₹${Number(p.net_salary).toLocaleString('en-IN')}</strong>
                 </div>
-                <a href="${api.getPdfUrl(p.payslip_id, p.payroll_year)}" target="_blank" class="btn btn-primary">Download Official PDF</a>
+                <a href="${api.getPdfUrl(p.payslip_id, p.payroll_year)}" target="_blank" class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    Download Official PDF
+                </a>
             </div>
         `;
 
@@ -585,21 +588,38 @@ window.refreshMv = async function() {
 // ============================================================================
 // 10. INTERACTIVE ADBMS SQL CONSOLE
 // ============================================================================
+let adbmsQueriesCatalog = [];
+
 async function initAdbmsConsole() {
     const selector = document.getElementById("adbmsQuerySelect");
     const sqlViewer = document.getElementById("adbmsSqlViewer");
+    const metricsDiv = document.getElementById("adbmsQueryMetrics");
     if (!selector) return;
 
     try {
         const res = await api.getAdbmsQueries();
-        selector.innerHTML = res.queries.map(q => `
-            <option value="${q.id}">Query #${q.id}: ${q.title} (${q.concept})</option>
+        adbmsQueriesCatalog = res.queries || [];
+        selector.innerHTML = adbmsQueriesCatalog.map(q => `
+            <option value="${q.id}">Query #${q.id}: ${q.title}</option>
         `).join('');
 
-        // On change, show query SQL preview
-        selector.addEventListener("change", () => {
-            sqlViewer.textContent = "-- Click 'Execute Live Query' to run against PostgreSQL 15+ engine";
-        });
+        const updateSelectedQueryPreview = () => {
+            const selectedId = parseInt(selector.value);
+            const found = adbmsQueriesCatalog.find(q => q.id === selectedId);
+            if (found && metricsDiv) {
+                metricsDiv.innerHTML = `
+                    <span style="display:inline-flex; align-items:center; gap:6px; color:var(--primary); background:var(--primary-subtle); border:1px solid var(--primary-border); padding:4px 10px; border-radius:4px; font-size:12px; font-weight:500;">
+                        <strong>Key Concept:</strong> ${found.concept}
+                    </span>
+                `;
+            }
+            if (sqlViewer) {
+                sqlViewer.textContent = "-- Click 'Run Query' to execute this query live against PostgreSQL 17 engine";
+            }
+        };
+
+        selector.addEventListener("change", updateSelectedQueryPreview);
+        updateSelectedQueryPreview();
     } catch (err) {
         console.error("Failed to load query catalog:", err);
     }
@@ -613,16 +633,20 @@ window.runAdbmsQuery = async function() {
     const tbody = document.getElementById("adbmsTableBody");
 
     const queryId = parseInt(selector.value);
-    sqlViewer.textContent = "Executing query on PostgreSQL...";
+    sqlViewer.textContent = "-- Executing query live against PostgreSQL 17 engine...";
 
     try {
         const res = await api.executeAdbmsQuery(queryId);
         sqlViewer.textContent = res.sql;
 
         metricsDiv.innerHTML = `
-            <span style="color:var(--accent-green)">✓ Query Executed in <strong>${res.execution_time_ms} ms</strong></span> | 
-            <span>Returned <strong>${res.row_count} rows</strong></span> | 
-            <span style="color:var(--accent-blue)">Concept: ${res.concept}</span>
+            <span style="display:inline-flex; align-items:center; gap:6px; color:#059669; background:#ECFDF5; border:1px solid #A7F3D0; padding:4px 10px; border-radius:4px; font-size:12px; font-weight:600;">
+                ✓ Query executed in <strong>${res.execution_time_ms} ms</strong>
+            </span>
+            <span style="margin: 0 6px; color:#94A3B8;">•</span>
+            <span style="color:#475569; font-size:12px;">Returned <strong>${res.row_count} rows</strong></span>
+            <span style="margin: 0 6px; color:#94A3B8;">•</span>
+            <span style="color:var(--primary); font-size:12px; font-weight:500;"><strong>Concept:</strong> ${res.concept}</span>
         `;
 
         // Render Dynamic Headers
@@ -633,7 +657,7 @@ window.runAdbmsQuery = async function() {
             <tr>${res.columns.map(col => `<td>${formatCellValue(row[col])}</td>`).join('')}</tr>
         `).join('');
     } catch (err) {
-        sqlViewer.textContent = `Error executing query: ${err.message}`;
+        sqlViewer.textContent = `-- Error executing query: ${err.message}`;
     }
 };
 
@@ -680,8 +704,9 @@ function showToast(msg, type = "success") {
         document.body.appendChild(toast);
     }
 
-    toast.style.background = (type === "error") ? "#E11D48" : "#0284C7";
+    toast.style.background = (type === "error") ? "#991B1B" : "#0F172A";
     toast.style.color = "#FFFFFF";
+    toast.style.border = "1px solid #334155";
     toast.textContent = msg;
     toast.style.display = "block";
     toast.style.opacity = "1";
