@@ -53,9 +53,15 @@ app.include_router(attendance.router)
 app.include_router(payroll.router)
 app.include_router(reports.router)
 
-# Mount frontend static directory if exists
+# Mount frontend static directories
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
 if os.path.exists(frontend_dir):
+    css_dir = os.path.join(frontend_dir, "css")
+    js_dir = os.path.join(frontend_dir, "js")
+    if os.path.exists(css_dir):
+        app.mount("/css", StaticFiles(directory=css_dir), name="css")
+    if os.path.exists(js_dir):
+        app.mount("/js", StaticFiles(directory=js_dir), name="js")
     app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
     @app.get("/")
