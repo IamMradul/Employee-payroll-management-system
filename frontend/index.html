@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Payroll Management System (EPMS) - ADBMS Project</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">
+                <h2>EPMS Core</h2>
+                <span>PostgreSQL 15+</span>
+            </div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item active" data-tab="dashboard">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </li>
+            <li class="nav-item" data-tab="employees">
+                <span class="nav-icon">👥</span>
+                <span>Employees</span>
+            </li>
+            <li class="nav-item" data-tab="hierarchy">
+                <span class="nav-icon">🌳</span>
+                <span>Org Hierarchy</span>
+            </li>
+            <li class="nav-item" data-tab="attendance">
+                <span class="nav-icon">⏱️</span>
+                <span>Attendance & Leaves</span>
+            </li>
+            <li class="nav-item" data-tab="payroll">
+                <span class="nav-icon">💰</span>
+                <span>Payroll Runs</span>
+            </li>
+            <li class="nav-item" data-tab="payslips">
+                <span class="nav-icon">📄</span>
+                <span>Payslip Ledger</span>
+            </li>
+            <li class="nav-item" data-tab="reports">
+                <span class="nav-icon">📈</span>
+                <span>Reports & Analytics</span>
+            </li>
+            <li class="nav-item" data-tab="adbms-console">
+                <span class="nav-icon">⚡</span>
+                <span>ADBMS SQL Console</span>
+            </li>
+        </ul>
+
+        <div class="db-badge">
+            <strong>ADBMS Architecture</strong>
+            Partitioning • RLS • GiST<br>
+            Recursive CTEs • JSONB
+        </div>
+    </aside>
+
+    <!-- Main Application Wrapper -->
+    <div class="main-wrapper">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="page-title">
+                <h1>Employee Payroll Management System</h1>
+            </div>
+
+            <div class="topbar-actions">
+                <!-- Role Switcher for Dynamic RLS Testing -->
+                <div class="role-switcher-box">
+                    <label>Simulate Role:</label>
+                    <select id="roleSelect" class="role-select">
+                        <option value="ADMIN">ADMIN (Full Access)</option>
+                        <option value="HR">HR (People & Leaves)</option>
+                        <option value="ACCOUNTANT">ACCOUNTANT (Disbursements)</option>
+                        <option value="EMPLOYEE">EMPLOYEE (Self RLS Only)</option>
+                    </select>
+                </div>
+
+                <div class="user-badge">
+                    <div class="avatar" id="userAvatar">A</div>
+                    <div>
+                        <div style="font-size:13px; font-weight:600;" id="userNameLabel">Vikram Aditya (Admin/CEO)</div>
+                        <span class="badge active" id="userRoleBadge" style="font-size:10px; padding:2px 6px;">ADMIN</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="content-area">
+
+            <!-- 1. DASHBOARD TAB -->
+            <section id="dashboard" class="tab-pane active">
+                <div class="kpi-grid">
+                    <div class="kpi-card blue">
+                        <div class="kpi-title">Active Headcount</div>
+                        <div class="kpi-value" id="kpiHeadcount">28</div>
+                        <div class="kpi-subtext">Across 6 enterprise departments</div>
+                    </div>
+                    <div class="kpi-card green">
+                        <div class="kpi-title">Latest Net Payout</div>
+                        <div class="kpi-value" id="kpiPayrollSpend">₹0.00</div>
+                        <div class="kpi-subtext">Automated statutory TDS applied</div>
+                    </div>
+                    <div class="kpi-card amber">
+                        <div class="kpi-title">Active Pay Period</div>
+                        <div class="kpi-value" id="kpiActiveRun">2026-02</div>
+                        <div class="kpi-subtext">Declarative partition pruning</div>
+                    </div>
+                    <div class="kpi-card purple">
+                        <div class="kpi-title">Batch Run Status</div>
+                        <div class="kpi-value" id="kpiRunStatus">PAID</div>
+                        <div class="kpi-subtext">Bank disbursement reference wired</div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Historical Payroll Spend Trend (6 Months)</h3>
+                        <div style="height: 260px;">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Department Spend Distribution</h3>
+                        <div style="height: 260px;">
+                            <canvas id="deptChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Recent Batch Payroll Executions</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pay Period</th>
+                                    <th>Employees</th>
+                                    <th>Gross Payroll</th>
+                                    <th>Deductions</th>
+                                    <th>Net Payout</th>
+                                    <th>Batch State</th>
+                                    <th>Processed On</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentRunsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. EMPLOYEES TAB -->
+            <section id="employees" class="tab-pane">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Enterprise Employee Master (28 Seeded Profiles)</h3>
+                        <span style="font-size:12px; color:var(--text-muted)">Joined with Departments, Designations & Managers</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Full Name</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Reporting Manager</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. ORG HIERARCHY TAB (RECURSIVE CTE) -->
+            <section id="hierarchy" class="tab-pane">
+                <div class="table-card" style="padding: 24px;">
+                    <div style="margin-bottom: 20px;">
+                        <h3>Organizational Command Hierarchy</h3>
+                        <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">
+                            Generated dynamically using PostgreSQL <strong>Recursive Common Table Expression (CTE)</strong> over the self-referencing <code>manager_id</code> foreign key.
+                        </p>
+                    </div>
+                    <div id="hierarchyTreeContainer"></div>
+                </div>
+            </section>
+
+            <!-- 4. ATTENDANCE & LEAVES TAB -->
+            <section id="attendance" class="tab-pane">
+                <div style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom:12px;">Active Leave Quotas & Balances (Stored Generated Column)</h3>
+                    <div id="leaveBalancesContainer" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px;"></div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Leave Applications & Approval Workflow</h3>
+                        <span style="font-size:12px; color:var(--text-muted)">Trigger automatically deducts quota upon approval</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Applicant</th>
+                                    <th>Leave Type</th>
+                                    <th>Dates</th>
+                                    <th>Status</th>
+                                    <th>Reason</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaveAppsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Daily Attendance & Timesheet Logs</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Emp Code</th>
+                                    <th>Name</th>
+                                    <th>Check In</th>
+                                    <th>Check Out</th>
+                                    <th>Status</th>
+                                    <th>Overtime</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. PAYROLL RUNS TAB -->
+            <section id="payroll" class="tab-pane">
+                <div class="console-container" style="margin-bottom: 24px;">
+                    <h3 style="margin-bottom:8px;">Execute PL/pgSQL Batch Payroll Run</h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">
+                        Invokes <code>CALL process_monthly_payroll(year, month)</code> which streams eligible employees via a PL/pgSQL <strong>CURSOR</strong> and transaction <strong>SAVEPOINTs</strong> into the declaratively partitioned <code>payslips</code> table.
+                    </p>
+                    <div style="display:flex; gap:16px; align-items:center;">
+                        <input type="number" id="payrollYearInput" class="text-input" style="max-width:120px;" value="2026" min="2020" max="2030">
+                        <select id="payrollMonthInput" class="select-input" style="max-width:180px;">
+                            <option value="1">01 - January</option>
+                            <option value="2">02 - February</option>
+                            <option value="3" selected>03 - March (Live Demo)</option>
+                            <option value="4">04 - April</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="triggerNewPayroll()">⚡ Run Monthly Payroll</button>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Payroll Batches Lifecycle (Draft &rarr; Processed &rarr; Approved &rarr; Paid)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Headcount</th>
+                                    <th>Gross Spend</th>
+                                    <th>Deductions</th>
+                                    <th>Net Payout</th>
+                                    <th>Status</th>
+                                    <th>Workflow Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payrollRunsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. PAYSLIP LEDGER TAB -->
+            <section id="payslips" class="tab-pane">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Historical Payslip Ledger (Partitioned by Year)</h3>
+                        <span style="font-size:12px; color:var(--text-muted)">Filtered automatically by Row-Level Security (RLS)</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Gross</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payslipsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. REPORTS & ANALYTICS TAB -->
+            <section id="reports" class="tab-pane">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Department Budget Utilization (vw_department_payroll_cost)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Paid Count</th>
+                                    <th>Monthly Budget</th>
+                                    <th>Gross Payroll</th>
+                                    <th>Budget Utilization (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deptCostTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Top 3 Compensation Earners per Department (DENSE_RANK Window Function)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Dept Rank</th>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Designation</th>
+                                    <th>Gross Salary</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topEarnersTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <div class="table-header">
+                        <div>
+                            <h3>Materialized View: Pre-Computed Analytics</h3>
+                            <span style="font-size:11px; color:var(--text-muted)">Cached physically on disk for sub-millisecond BI dashboards</span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="refreshMv()">🔄 Refresh Materialized View</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Period</th>
+                                    <th>Headcount</th>
+                                    <th>Total Gross Spend</th>
+                                    <th>Net Disbursed</th>
+                                    <th>Cached Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mvTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. ADBMS SQL CONSOLE TAB -->
+            <section id="adbms-console" class="tab-pane">
+                <div class="console-container">
+                    <h3 style="margin-bottom:8px;">Interactive ADBMS Query Execution Engine</h3>
+                    <p style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">
+                        Select any of the advanced PostgreSQL queries below to inspect its raw SQL and execute it live against the database engine.
+                    </p>
+
+                    <div class="query-selector">
+                        <select id="adbmsQuerySelect" class="select-input"></select>
+                        <button class="btn btn-primary" onclick="runAdbmsQuery()">⚡ Execute Live Query</button>
+                    </div>
+
+                    <div class="sql-viewer" id="adbmsSqlViewer">-- Select a query above and click 'Execute Live Query'</div>
+                    <div id="adbmsQueryMetrics" style="font-size:12px; margin-bottom:16px;"></div>
+
+                    <div class="table-card" style="margin-bottom:0;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead id="adbmsTableHead"></thead>
+                                <tbody id="adbmsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Main Detail Modal -->
+    <div class="modal-overlay" id="mainModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Details</h3>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Script Imports -->
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
